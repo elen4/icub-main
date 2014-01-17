@@ -41,6 +41,7 @@ IF(NOT SKIP_dragonfly2)
   ENDIF (WIN32)
 
   icub_export_library(dragonfly2)
+  yarp_install(FILES dragonfly2.ini DESTINATION ${ICUB_PLUGIN_MANIFESTS_INSTALL_DIR})
   ENDIF(NOT DRAGONFLYAPI_FOUND)
 
 ENDIF(NOT SKIP_dragonfly2)

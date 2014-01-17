@@ -13,5 +13,6 @@ ADD_LIBRARY(legscalibrator iCubLegsCalibrator.cpp iCubLegsCalibrator.h)
 target_link_libraries(legscalibrator ${YARP_LIBRARIES})
 
 icub_export_library(legscalibrator)
+    yarp_install(FILES legscalibrator.ini DESTINATION ${ICUB_PLUGIN_MANIFESTS_INSTALL_DIR})
 
 endif (NOT SKIP_icublegscalibrator)

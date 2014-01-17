@@ -18,6 +18,7 @@ if(NOT SKIP_cartesiancontrollerserver)
    add_library(cartesiancontrollerserver ${server_source} ${server_header})
    target_link_libraries(cartesiancontrollerserver iKin ${YARP_LIBRARIES})
    icub_export_library(cartesiancontrollerserver)
+   yarp_install(FILES cartesiancontrollerserver.ini DESTINATION ${ICUB_PLUGIN_MANIFESTS_INSTALL_DIR})
 
 endif()
 
@@ -35,6 +36,7 @@ if(NOT SKIP_cartesiancontrollerclient)
    target_link_libraries(cartesiancontrollerclient iKin ${YARP_LIBRARIES})
 
    icub_export_library(cartesiancontrollerclient)
+yarp_install(FILES cartesiancontrollerclient.ini DESTINATION ${ICUB_PLUGIN_MANIFESTS_INSTALL_DIR})
 endif()
 
 

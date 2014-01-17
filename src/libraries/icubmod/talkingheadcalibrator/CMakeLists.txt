@@ -12,5 +12,6 @@ ADD_LIBRARY(TalkingHeadcalibrator iCubTalkingHeadCalibrator.cpp iCubTalkingHeadC
 target_link_libraries(TalkingHeadcalibrator ${YARP_LIBRARIES})
 
 icub_export_library(TalkingHeadcalibrator)
+yarp_install(FILES icubtalkingheadcalibrator.ini DESTINATION ${ICUB_PLUGIN_MANIFESTS_INSTALL_DIR})
 
 endif(NOT SKIP_icubtalkingheadcalibrator)

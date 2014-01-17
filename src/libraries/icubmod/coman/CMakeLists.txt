@@ -42,6 +42,7 @@ IF (NOT SKIP_${COMAN_MC} )
 #    set_target_properties(${COMAN_MC} PROPERTIES COMPILE_FLAGS ${coman_build_flags})
     target_link_libraries(${COMAN_MC} coman_handler_lib debugStream  iCubDev ${YARP_LIBRARIES})
     icub_export_library(${COMAN_MC} )
+    yarp_install(FILES comanMotionControl.ini DESTINATION ${ICUB_PLUGIN_MANIFESTS_INSTALL_DIR})
 ENDIF (NOT SKIP_${COMAN_MC} )
 
 
@@ -51,6 +52,7 @@ IF (NOT SKIP_${COMAN_FT} )
 #    set_target_properties(${COMAN_FT} PROPERTIES COMPILE_FLAGS ${coman_build_flags})
     target_link_libraries(${COMAN_FT} coman_handler_lib ${COMAN_LIB} debugStream iCubDev ${YARP_LIBRARIES})
     icub_export_library(${COMAN_FT} )
+    yarp_install(FILES comanFTsensor.ini DESTINATION ${ICUB_PLUGIN_MANIFESTS_INSTALL_DIR})
 ENDIF (NOT SKIP_${COMAN_FT} )
 
 

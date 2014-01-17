@@ -14,4 +14,6 @@ target_link_libraries(canBusSkin ${YARP_LIBRARIES})
 
 icub_export_library(canBusSkin)
 
+yarp_install(FILES canBusSkin.ini DESTINATION ${ICUB_PLUGIN_MANIFESTS_INSTALL_DIR})
+
 endif (NOT SKIP_canBusSkin)

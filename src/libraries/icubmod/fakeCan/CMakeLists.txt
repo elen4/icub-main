@@ -13,4 +13,5 @@ IF (NOT SKIP_fakecan)
     target_link_libraries(fcan ${YARP_LIBRARIES})
     
     icub_export_library(fcan)
+    yarp_install(FILES fcan.ini DESTINATION ${ICUB_PLUGIN_MANIFESTS_INSTALL_DIR})
 ENDIF (NOT SKIP_fakecan)

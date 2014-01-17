@@ -12,5 +12,6 @@ ADD_LIBRARY(headcalibratorV2 iCubHeadCalibratorV2.cpp iCubHeadCalibratorV2.h)
 target_link_libraries(headcalibratorV2 ${YARP_LIBRARIES})
 
 icub_export_library(headcalibratorV2)
+yarp_install(FILES headcalibratorV2.ini DESTINATION ${ICUB_PLUGIN_MANIFESTS_INSTALL_DIR})
 
 endif(NOT SKIP_icubheadcalibratorV2)

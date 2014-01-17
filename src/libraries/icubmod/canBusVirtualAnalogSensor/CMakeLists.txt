@@ -14,4 +14,6 @@ target_link_libraries(canBusVirtualAnalogSensor ${YARP_LIBRARIES})
 
 icub_export_library(canBusVirtualAnalogSensor)
 
+yarp_install(FILES canBusVirtualAnalogSensor.ini DESTINATION ${ICUB_PLUGIN_MANIFESTS_INSTALL_DIR})
+
 endif (NOT SKIP_canBusVirtualAnalogSensor)

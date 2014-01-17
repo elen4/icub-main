@@ -223,6 +223,7 @@ add_library(${PROJECTNAME} ${embobj_source} ${embobj_header})
 TARGET_LINK_LIBRARIES(${PROJECTNAME} debugStream ${YARP_LIBRARIES} ${ACE_LIBRARIES} )  
 
 icub_export_library(${PROJECTNAME})
+yarp_install(FILES ethResources.ini DESTINATION ${ICUB_PLUGIN_MANIFESTS_INSTALL_DIR})
 
 endif(ICUB_COMPILE_EMBOBJ_LIBRARY)
 

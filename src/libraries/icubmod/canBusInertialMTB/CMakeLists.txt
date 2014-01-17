@@ -14,4 +14,6 @@ target_link_libraries(canBusInertialMTB ${YARP_LIBRARIES})
 
 icub_export_library(canBusInertialMTB)
 
+yarp_install(FILES canBusInertialMTB.ini DESTINATION ${ICUB_PLUGIN_MANIFESTS_INSTALL_DIR})
+
 endif (NOT SKIP_canBusInertialMTB)

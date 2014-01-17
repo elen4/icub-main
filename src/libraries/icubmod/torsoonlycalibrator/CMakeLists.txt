@@ -13,5 +13,6 @@ ADD_LIBRARY(torsoonlycalibrator iCubTorsoOnlyCalibrator.cpp iCubTorsoOnlyCalibra
 target_link_libraries(torsoonlycalibrator ${YARP_LIBRARIES})
 
 icub_export_library(torsoonlycalibrator)
+yarp_install(FILES torsoonlycalibrator.ini DESTINATION ${ICUB_PLUGIN_MANIFESTS_INSTALL_DIR})
 
 endif (NOT SKIP_icubtorsoonlycalibrator)

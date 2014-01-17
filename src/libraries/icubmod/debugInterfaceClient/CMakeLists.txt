@@ -12,3 +12,5 @@ add_library(debugInterfaceClient debugInterfaceClient.h debugInterfaceClient.cpp
 target_link_libraries(debugInterfaceClient ${YARP_LIBRARIES})
 
 icub_export_library(debugInterfaceClient)
+yarp_install(FILES debugInterfaceClient.ini DESTINATION ${ICUB_PLUGIN_MANIFESTS_INSTALL_DIR})
+

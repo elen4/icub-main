@@ -76,3 +76,23 @@ target_link_libraries(icubmoddev YARP_OS YARP_dev YARP_init)
 INSTALL(TARGETS icubmoddev DESTINATION bin)
 #INSTALL(TARGETS icubmod DESTINATION lib)
 
+set(YARP_LIBRARY_PATH "${CMAKE_BINARY_DIR}/lib")
+if (WIN32)
+set(YARP_LIBRARY_EXTENSION ".dll")
+set(YARP_LIBRARY_PREFIX "")
+else()
+set(YARP_LIBRARY_EXTENSION ".so")
+set(YARP_LIBRARY_PREFIX "lib")
+endif()
+if(ICUB_SHARED_LIBRARY)
+  set(YARP_LIBRARY_TYPE "shared")
+else()
+  set(YARP_LIBRARY_TYPE "static")
+endif()
+
+configure_file(PluginPath.cmake.in
+        ${CMAKE_BINARY_DIR}/${ICUB_PLUGIN_MANIFESTS_INSTALL_DIR}/path.ini @ONLY IMMEDIATE)
+set(YARP_LIBRARY_PATH ${CMAKE_INSTALL_PREFIX}/lib)
+configure_file(PluginPath.cmake.in
+        ${CMAKE_BINARY_DIR}/path_for_install.ini @ONLY IMMEDIATE)
+install(FILES ${CMAKE_BINARY_DIR}/path_for_install.ini RENAME path.ini COMPONENT configuration DESTINATION ${ICUB_PLUGIN_MANIFESTS_INSTALL_DIR})

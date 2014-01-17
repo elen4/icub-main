@@ -69,6 +69,7 @@ else()
    icub_export_library(canmotioncontrol)
 ENDIF () 
 
+yarp_install(FILES canBusMotionControl.ini DESTINATION ${ICUB_PLUGIN_MANIFESTS_INSTALL_DIR})
 
 
 

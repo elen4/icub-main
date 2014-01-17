@@ -29,6 +29,8 @@ IF (NOT SKIP_icubarmcalibratorj8 OR NOT SKIP_icubarmcalibratorj4 OR NOT SKIP_icu
     icub_export_library(armcalibrator)
     icub_export_library(DFKI_hand_calibrator)
 
+    yarp_install(FILES armCalibrator.ini DESTINATION ${ICUB_PLUGIN_MANIFESTS_INSTALL_DIR})
+
 endif (NOT SKIP_icubarmcalibratorj8 OR NOT SKIP_icubarmcalibratorj4 OR NOT SKIP_icubarmcalibrator OR NOT SKIP_DFKI_hand_calibrator)
 
 

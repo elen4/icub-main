@@ -25,4 +25,6 @@ PREPARE_DEVICE(parametricCalibrator TYPE parametricCalibrator INCLUDE parametric
     add_library(parametricCalibrator parametricCalibrator.h parametricCalibrator.cpp)
     target_link_libraries(parametricCalibrator debugStream ${YARP_LIBRARIES})
     icub_export_library(parametricCalibrator)
+    yarp_install(FILES parametricCalibrator.ini DESTINATION ${ICUB_PLUGIN_MANIFESTS_INSTALL_DIR})
 endif()
+

@@ -11,6 +11,7 @@
  target_link_libraries(controlboardwrapper2  ${YARP_LIBRARIES})
  icub_export_library(controlboardwrapper2)
 
+yarp_install(FILES controlboardwrapper2.ini DESTINATION ${ICUB_PLUGIN_MANIFESTS_INSTALL_DIR})
 
 
 

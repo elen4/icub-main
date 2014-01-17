@@ -15,5 +15,6 @@ PREPARE_DEVICE(embObjMotionControl TYPE embObjMotionControl
     ADD_LIBRARY(embObjMotionControl embObjMotionControl.cpp embObjMotionControl.h)
     TARGET_LINK_LIBRARIES(embObjMotionControl debugStream ethResources iCubDev ${YARP_LIBRARIES} ${ACE_LIBRARIES})
     icub_export_library(embObjMotionControl)
+    yarp_install(FILES embObjMotionControl.ini DESTINATION ${ICUB_PLUGIN_MANIFESTS_INSTALL_DIR})
 ENDIF (NOT SKIP_embObjMotionControl)
 

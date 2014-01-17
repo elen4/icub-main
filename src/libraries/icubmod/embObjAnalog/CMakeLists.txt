@@ -15,5 +15,6 @@ IF (NOT SKIP_embObjAnalogSensor)
   ADD_LIBRARY(embObjAnalogSensor embObjAnalogSensor.cpp embObjAnalogSensor.h)
   TARGET_LINK_LIBRARIES(embObjAnalogSensor debugStream  ethResources ${YARP_LIBRARIES} ${ACE_LIBRARIES})
   icub_export_library(embObjAnalogSensor)
+  yarp_install(FILES embObjAnalogSensor.ini DESTINATION ${ICUB_PLUGIN_MANIFESTS_INSTALL_DIR})
 ENDIF (NOT SKIP_embObjAnalogSensor)
 
