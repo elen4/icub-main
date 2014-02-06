@@ -1,7 +1,7 @@
 /* 
  * Copyright (C) 2011 Department of Robotics Brain and Cognitive Sciences - Istituto Italiano di Tecnologia
- * Author: Ugo Pattacini
- * email:  ugo.pattacini@iit.it
+ * Author: Ugo Pattacini, Vadim Tikhanoff
+ * email:  ugo.pattacini@iit.it vadim.tikhanoff@iit.it
  * Permission is granted to copy, distribute, and/or modify this program
  * under the terms of the GNU General Public License, version 2 or any
  * later version published by the Free Software Foundation.
@@ -27,7 +27,7 @@ utter them, also controlling the facial expressions.
 
 The behavior is pretty intuitive and does not need any further
 detail.\n 
- 
+
 \section lib_sec Libraries 
 - YARP libraries. 
 - Packages for speech synthesis (e.g. festival, espeak, ...).
@@ -73,7 +73,7 @@ At startup an attempt is made to connect to
   expressions.
  
 - \e /<name>/rpc: a remote procedure call port used for the 
-  following run-time querie: \n
+  following run-time queries: \n
   - [stat]: returns "speaking" or "quiet".
   - [set] [opt] "package_options": set new package dependent
    command-line options.
@@ -86,12 +86,22 @@ Linux and Windows.
 \author Ugo Pattacini
 */ 
 
+#include <yarp/os/Network.h>
+#include <yarp/os/RFModule.h>
+#include <yarp/os/BufferedPort.h>
+#include <yarp/os/RpcClient.h>
+#include <yarp/os/RpcServer.h>
+#include <yarp/os/Mutex.h>
+#include <yarp/os/RateThread.h>
+#include <yarp/os/Time.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
 #include <deque>
+#include <iostream>
 
-#include <yarp/os/all.h>
+#include <iCub/iSpeak/iSpeakThrift.h>
 
 using namespace std;
 using namespace yarp::os;
@@ -176,7 +186,7 @@ public:
     void resume()
     {
         t0=Time::now();
-        RateThread::resume();        
+        RateThread::resume();
     }
 
     /************************************************************************/
@@ -360,87 +370,91 @@ public:
 
 
 /************************************************************************/
-class Launcher: public RFModule
+class Launcher : public iSpeakThrift, public yarp::os::RFModule
 {
 protected:
     iSpeak speaker;
-    RpcServer rpc;
+    yarp::os::Port  rpcPort;
 
 public:
-    /************************************************************************/
-    bool configure(ResourceFinder &rf)
-    {
-        Time::turboBoost();
+    virtual std::string stat();
+    virtual std::string get_opt();
+    virtual bool set_opt(const std::string& options);
 
-        speaker.configure(rf);
-        if (!speaker.start())
-            return false;
-
-        string name=rf.find("name").asString().c_str();
-        rpc.open(("/"+name+"/rpc").c_str());
-        attach(rpc);
-
-        return true;
-    }
-
-    /************************************************************************/
-    bool close()
-    {
-        rpc.interrupt();
-        rpc.close();
-
-        speaker.stop();
-
-        return true;
-    }
-
-    /************************************************************************/
-    bool respond(const Bottle &command, Bottle &reply)
-    {
-        int cmd0=command.get(0).asVocab();
-        if (cmd0==Vocab::encode("stat"))
-        {
-            reply.addString(speaker.isSpeaking()?"speaking":"quiet");
-            return true;
-        }
-
-        if (command.size()>1)
-        {
-            int cmd1=command.get(1).asVocab();
-            if (cmd1==Vocab::encode("opt"))
-            {
-                if (cmd0==Vocab::encode("get"))
-                {
-                    reply.addString(speaker.get_package_options().c_str());
-                    return true;
-                }
-
-                if (cmd0==Vocab::encode("set"))
-                {
-                    string cmd2=command.get(2).asString().c_str();
-                    speaker.set_package_options(cmd2);
-                    reply.addString("ack");
-                    return true;
-                }
-            }
-        }
-
-        return RFModule::respond(command,reply);
-    }
-
-    /************************************************************************/
-    double getPeriod()
+    bool attach(yarp::os::Port &source);
+    bool configure( yarp::os::ResourceFinder &rf );
+    bool updateModule();
+    bool close();
+	double getPeriod()
     {
         return 1.0;
     }
 
-    /************************************************************************/
-    bool updateModule()
-    {
-        return true;
-    }
 };
+/************************************************************************/
+string Launcher::stat( )
+{
+    std::string send;
+    send = (speaker.isSpeaking()?"speaking":"quiet");
+    return send;
+}
 
+/************************************************************************/
+string Launcher::get_opt()
+{
+	return speaker.get_package_options().c_str();
+}
+
+/************************************************************************/
+bool Launcher::set_opt(const std::string& options)
+{
+	speaker.set_package_options(options);
+	return true;
+}
+
+/************************************************************************/
+bool Launcher::attach(yarp::os::Port &source)
+{
+    return this->yarp().attachAsServer(source);
+}
+
+/************************************************************************/
+bool Launcher::configure( yarp::os::ResourceFinder &rf )
+{
+    Time::turboBoost();
+
+    speaker.configure(rf);
+    if (!speaker.start())
+       return false;
+
+    string name=rf.find("name").asString().c_str();
+
+    attach(rpcPort);
+
+    if ( !rpcPort.open(("/"+name+"/rpc").c_str()) )
+    {
+        std::cout << getName() << ": Unable to open port " << std::endl;
+        return false;
+    }
+
+    return true;
+}
+
+/************************************************************************/
+bool Launcher::updateModule()
+{
+    return true;
+}
+
+/************************************************************************/
+bool Launcher::close()
+{
+    rpcPort.interrupt();
+    rpcPort.close();
+
+    speaker.stop();
+    return true;
+}
 
 /************************************************************************/
 int main(int argc, char *argv[])

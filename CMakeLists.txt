@@ -134,6 +134,7 @@ set(ENABLE_icubmod_controlboardwrapper2 TRUE CACHE BOOL "enable controlboardWrap
 add_subdirectory(app)
 
 # Create everything needed to build our executables.
+set (ALLOW_IDL_GENERATION ON)
 add_subdirectory(src)
 
 ########### propagate version info to targets
